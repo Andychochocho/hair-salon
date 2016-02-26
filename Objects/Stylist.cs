@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System;
 
 namespace HairSalon
 {
@@ -9,14 +9,13 @@ namespace HairSalon
     private string _name;
     private int _id;
 
-
-    public Stylists(string name, id=0)
+    public Stylists(string name, int id=0)
     {
       _name = name;
       _id = id;
     }
 
-    public override bool Equals(System.Objects otherStylists)
+    public override bool Equals(System.Object otherStylists)
     {
       if(!(otherStylists is Stylists))
       {
@@ -31,37 +30,38 @@ namespace HairSalon
       }
     }
 
-    public void Update(string newName)
-    {
-      SqlConnection conn = DB.Connection();
-      SqlDataReader rdr;
-      conn.Open();
-
-      SqlCommand cmd = new SqlCommand(UPDATE stylists SET name="@NewName" OUTPUT INSERTED.name WHERE id="@StylistsId", conn);
-
-      SqlParameter newNameParameter = new SqlParameter();
-      newNameParameter.ParameterName = "@NewName";
-      newNameParameter.Value = newName;
-      cmd.Parameters.Add(newNameParameter);
-
-      SqlParameter StylistsIdParameter = new SqlParameter();
-      StylistsIdParameter.ParameterName = "@StylistsId";
-      StylistsIdParameter.Value = this.GetId();
-      cmd.Parameters.Add();
-
-      while(rdr.Read())
-      {
-        this._name = rdr.GetString();
-      }
-      if(rdr != null)
-      {
-        rdr.Close();
-      }
-      if (conn.Read())
-      {
-        conn.Close();
-      }
-    }
+    // public void Update(string newName)
+    // {
+    //   SqlConnection conn = DB.Connection();
+    //   SqlDataReader rdr;
+    //   conn.Open();
+    //
+    //   SqlCommand cmd = new SqlCommand("UPDATE stylists SET name=@NewName OUTPUT INSERTED.name WHERE id=@StylistsId", conn);
+    //
+    //   SqlParameter newNameParameter = new SqlParameter();
+    //   newNameParameter.ParameterName = "@NewName";
+    //   newNameParameter.Value = newName;
+    //   cmd.Parameters.Add(newNameParameter);
+    //
+    //   SqlParameter StylistsIdParameter = new SqlParameter();
+    //   StylistsIdParameter.ParameterName = "@StylistsId";
+    //   StylistsIdParameter.Value = this.GetId();
+    //   cmd.Parameters.Add(StylistsIdParameter);
+    //   rdr = cmd.ExecuteReader();
+    //
+    //   while(rdr.Read())
+    //   {
+    //     this._name = rdr.GetString(0);
+    //   }
+    //   if(rdr != null)
+    //   {
+    //     rdr.Close();
+    //   }
+    //   if (conn != null)
+    //   {
+    //     conn.Close();
+    //   }
+    // }
     //Getters and Setters
     public int GetId()
     {
@@ -73,8 +73,9 @@ namespace HairSalon
     }
     public void SetName(string newName)
     {
-      _name = NewName();
+      _name = newName;
     }
+
     public static List<Stylists> GetAll()
     {
       List<Stylists> allStylists = new List<Stylists> {};
@@ -88,7 +89,7 @@ namespace HairSalon
       {
         int stylistsId = rdr.GetInt32(0);
         string stylistsName = rdr.GetString(1);
-        Sylists newStylists = new Stylists(stylistsName, stylistsId);
+        Stylists newStylists = new Stylists(stylistsName, stylistsId);
         allStylists.Add(newStylists);
       }
       if (rdr != null)
@@ -100,6 +101,14 @@ namespace HairSalon
         conn.Close();
       }
       return allStylists;
+    }
+
+    public static void DeleteAll()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("DELETE FROM stylists", conn);
+      cmd.ExecuteNonQuery();
     }
   }
 }
