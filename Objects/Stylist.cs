@@ -129,7 +129,41 @@ namespace HairSalon
         conn.Close();
       }
     }
-    
+
+    public static Stylists Find(int id)
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM stylists WHERE id = @StylistId", conn);
+      SqlParameter StylistsIdParameter = new SqlParameter();
+      StylistsIdParameter.ParameterName = "@StylistId";
+      StylistsIdParameter.Value = id.ToString();
+      cmd.Parameters.Add(StylistsIdParameter);
+      rdr = cmd.ExecuteReader();
+
+      int foundStylistsId = 0;
+      string foundStylistsName = null;
+
+      while(rdr.Read())
+      {
+        foundStylistsId = rdr.GetInt32(0);
+        foundStylistsName = rdr.GetString(1);
+      }
+      Stylists foundStylists = new Stylists(foundStylistsName, foundStylistsId);
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return foundStylists;
+    }
+
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();

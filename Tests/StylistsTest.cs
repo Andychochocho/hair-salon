@@ -36,6 +36,16 @@ namespace HairSalon
       List<Stylists> testList = new List<Stylists> {testStylist};
       Assert.Equal(testList, result);
     }
+    [Fact]
+    public void test_Find_FindsStylistsInDatabase()
+    {
+      Stylists testStylists = new Stylists("Jimmy");
+      testStylists.Save();
+
+      Stylists foundStylists = Stylists.Find(testStylists.GetId());
+      Assert.Equal(testStylists, foundStylists);
+    }
+
     public void Dispose()
     {
       // Clients.DeleteAll();
