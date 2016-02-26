@@ -46,6 +46,8 @@ namespace HairSalon
       Assert.Equal(testStylists, foundStylists);
     }
 
+    // THIS WILL BE WHERE THE RETRIEVE TEST GOES AFTER CLIENTS CS IS FINISHED
+
     public void Dispose()
     {
       // Clients.DeleteAll();
