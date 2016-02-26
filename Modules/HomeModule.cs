@@ -24,7 +24,15 @@ namespace HairSalon
       };
       Get["/stylist/ClearAll"] = _ => {
         Stylists.DeleteAll();
-        return View ["stylistClearAll.cshtml"];
+        return View ["index.cshtml"];
+      };
+      Get["/stylists/{id}"] =Parameters=> {
+        Dictionary <string, object> model = new Dictionary <string, object>();
+        var selectedStylist = Stylists.Find(Parameters.id);
+        var StylistClient = selectedStylist.GetClients();
+        model.Add ("stylist", selectedStylist);
+        model.Add("client", StylistClient);
+        return View["stylist.cshtml", model];
       };
     }
   }
