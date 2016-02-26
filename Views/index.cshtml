@@ -1,0 +1,19 @@
+
+<h1>Portland HairStylists and their Clients!</h1>
+
+<h2>Check the options below for hairstylists.</h2>
+
+@if (@Model.Count == 0)
+{
+<h2>You haven't added any stylists!</h2>
+}
+<ul>
+  @foreach (var stylistsNames in Model)
+  {
+    <li><a href="/stylists/@stylistsNames.GetId()">@stylistsNames.GetName()</a></li>
+  }
+</ul>
+
+<a href="/stylists/new">Add a new stylist</a>
+<br><br>
+<a href="/stylist/clearAll">Clear all your stylists</a>
