@@ -52,10 +52,32 @@ namespace HairSalon
     {
       Clients testClients = new Clients("Drana", 4000, "vampire", 1);
       testClients.Save();
-      
+
       Clients foundClients = Clients.Find(testClients.GetId());
       Assert.Equal(testClients, foundClients);
     }
+
+    [Fact]
+    public void test_Update_UpdatesClientsInDatabase()
+    {
+      string name = "Carl";
+      int age = 55;
+      string personalPronoun = "he";
+      int stylistsId = 1;
+
+      Clients testClients = new Clients(name, age, personalPronoun, stylistsId);
+      testClients.Save();
+
+      string newName = "Caroline";
+
+      testClients.Update(newName);
+
+      Clients result = new Clients(testClients.GetName(), age, personalPronoun, stylistsId);
+      Clients newClient = new Clients (newName, age, personalPronoun, stylistsId);
+      Assert.Equal(newClient, result);
+
+    }
+
     public void Dispose()
     {
       Clients.DeleteAll();
