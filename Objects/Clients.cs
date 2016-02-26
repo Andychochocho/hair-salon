@@ -110,6 +110,50 @@ namespace HairSalon
       return allClients;
     }
 
+    public void Save()
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO clients (name, age, personal_pronoun, stylists_id) OUTPUT INSERTED.id VALUES (@ClientsName, @ClientsAge, @ClientsPersonalPronoun, @StylistsId);", conn);
+
+      SqlParameter nameParameter = new SqlParameter();
+      nameParameter.ParameterName = "@ClientsName";
+      nameParameter.Value = this.GetName();
+
+      SqlParameter ageParameter = new SqlParameter();
+      ageParameter.ParameterName = "@ClientsAge";
+      ageParameter.Value = this.GetAge();
+
+      SqlParameter personalPronounParameter = new SqlParameter();
+      personalPronounParameter.ParameterName = "@ClientsPersonalPronoun";
+      personalPronounParameter.Value = this.GetPersonalPronoun();
+
+      SqlParameter stylistsIdParameter = new SqlParameter();
+      stylistsIdParameter.ParameterName = "@StylistsId";
+      stylistsIdParameter.Value = this.GetStylistsId();
+
+      cmd.Parameters.Add(nameParameter);
+      cmd.Parameters.Add(ageParameter);
+      cmd.Parameters.Add(personalPronounParameter);
+      cmd.Parameters.Add(stylistsIdParameter);
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this._id = rdr.GetInt32(0);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
     public static void DeleteAll()
     {
       SqlConnection conn = DB.Connection();
