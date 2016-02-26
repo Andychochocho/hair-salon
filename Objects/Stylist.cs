@@ -30,38 +30,38 @@ namespace HairSalon
       }
     }
 
-    // public void Update(string newName)
-    // {
-    //   SqlConnection conn = DB.Connection();
-    //   SqlDataReader rdr;
-    //   conn.Open();
-    //
-    //   SqlCommand cmd = new SqlCommand("UPDATE stylists SET name=@NewName OUTPUT INSERTED.name WHERE id=@StylistsId", conn);
-    //
-    //   SqlParameter newNameParameter = new SqlParameter();
-    //   newNameParameter.ParameterName = "@NewName";
-    //   newNameParameter.Value = newName;
-    //   cmd.Parameters.Add(newNameParameter);
-    //
-    //   SqlParameter StylistsIdParameter = new SqlParameter();
-    //   StylistsIdParameter.ParameterName = "@StylistsId";
-    //   StylistsIdParameter.Value = this.GetId();
-    //   cmd.Parameters.Add(StylistsIdParameter);
-    //   rdr = cmd.ExecuteReader();
-    //
-    //   while(rdr.Read())
-    //   {
-    //     this._name = rdr.GetString(0);
-    //   }
-    //   if(rdr != null)
-    //   {
-    //     rdr.Close();
-    //   }
-    //   if (conn != null)
-    //   {
-    //     conn.Close();
-    //   }
-    // }
+    public void Update(string newName)
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("UPDATE stylists SET name=@NewName OUTPUT INSERTED.name WHERE id=@StylistsId", conn);
+
+      SqlParameter newNameParameter = new SqlParameter();
+      newNameParameter.ParameterName = "@NewName";
+      newNameParameter.Value = newName;
+      cmd.Parameters.Add(newNameParameter);
+
+      SqlParameter StylistsIdParameter = new SqlParameter();
+      StylistsIdParameter.ParameterName = "@StylistsId";
+      StylistsIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(StylistsIdParameter);
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this._name = rdr.GetString(0);
+      }
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
     //Getters and Setters
     public int GetId()
     {
