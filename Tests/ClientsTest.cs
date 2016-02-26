@@ -75,8 +75,27 @@ namespace HairSalon
       Clients result = new Clients(testClients.GetName(), age, personalPronoun, stylistsId);
       Clients newClient = new Clients (newName, age, personalPronoun, stylistsId);
       Assert.Equal(newClient, result);
-
     }
+    [Fact]
+    public void test_Delete_DeletesClientFromDatabase()
+    {
+      string name = "Hair Dresser";
+
+      Stylists testStylists1 = new Stylists(name);
+      testStylists1.Save();
+
+      Clients testClients1 = new Clients("Bruce Wayne", 40, "bat", 4, testStylists1.GetId());
+      testClients1.Save();
+      Clients testClients2 = new Clients("Clark Kent", 45, "alien", 18, testStylists1.GetId());
+      testClients2.Save();
+
+      testClients1.Delete();
+      List<Clients> resultClients = testStylists1.GetClients();
+      List<Clients> testClientsList = new List<Clients> {testClients2};
+
+      Assert.Equal(testClientsList, resultClients);
+    }
+
 
     public void Dispose()
     {
