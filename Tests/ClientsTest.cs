@@ -39,13 +39,25 @@ namespace HairSalon
     [Fact]
     public void test_SaveAssignsIdToObject()
     {
-      Clients testClients = new Clients("Nissa", 300, "she", 1);
+      Clients testClients = new Clients("Nissa", 300, "planeswalker", 1);
       testClients.Save();
 
       Clients savedClients = Clients.GetAll()[0];
       int result = savedClients.GetId();
       int testId = testClients.GetId();
       Assert.Equal(testId, result);
+    }
+    [Fact]
+    public void test_FindClientsInDatabase()
+    {
+      Clients testClients = new Clients("Drana", 4000, "vampire", 1);
+      testClients.Save();
+
+      Clients foundClients = Clients.Find(testClients.GetId());
+      // foundClients.Save();
+      Console.WriteLine("TEST CLIENT: " + testClients.GetId());
+      Console.WriteLine("FOUND CLIENT: " + foundClients.GetId());
+      Assert.Equal(testClients, foundClients);
     }
     public void Dispose()
     {
