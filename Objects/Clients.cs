@@ -22,18 +22,23 @@ namespace HairSalon
       _stylists_id = stylists_id;
     }
 
-    // public override bool Equals(System.Object otherClients)
-    // {
-    //   if (!(otherClients is Clients))
-    //   {
-    //     return false;
-    //   }
-    //   else
-    //   {
-    //     Clients newClients = (Clients) otherClients;
-    //     bool idEquality = this.GetId() == newClients.GetId();
-    //   }
-    // }
+    public override bool Equals(System.Object otherClients)
+    {
+      if (!(otherClients is Clients))
+      {
+        return false;
+      }
+      else
+      {
+        Clients newClients = (Clients) otherClients;
+        bool idEquality = this.GetId() == newClients.GetId();
+        bool idStylistEquality = this.GetStylistsId() == newClients.GetStylistsId();
+        bool nameEquality = this.GetName() == newClients.GetName();
+        bool ageEquality = this.GetAge() == newClients.GetAge();
+        bool personalPronounEquality = this.GetPersonalPronoun() == newClients.GetPersonalPronoun();
+        return (idEquality && nameEquality && ageEquality && personalPronounEquality);
+      }
+    }
 
     // Getters and Setters
     public int GetId()
