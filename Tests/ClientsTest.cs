@@ -52,11 +52,8 @@ namespace HairSalon
     {
       Clients testClients = new Clients("Drana", 4000, "vampire", 1);
       testClients.Save();
-
+      
       Clients foundClients = Clients.Find(testClients.GetId());
-      // foundClients.Save();
-      Console.WriteLine("TEST CLIENT: " + testClients.GetId());
-      Console.WriteLine("FOUND CLIENT: " + foundClients.GetId());
       Assert.Equal(testClients, foundClients);
     }
     public void Dispose()

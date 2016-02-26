@@ -13,12 +13,14 @@ namespace HairSalon
     {
       DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=hairSalon_test;Integrated Security=SSPI;";
     }
+
     [Fact]
     public void test_StylistsEmptyAtFirst()
     {
       int result = Stylists.GetAll().Count;
       Assert.Equal(0, result);
     }
+
     [Fact]
     public void test_StylistsReturnTrueForSame()
     {
@@ -26,6 +28,7 @@ namespace HairSalon
       Stylists secondStylist = new Stylists("Cody");
       Assert.Equal(firstStylist, secondStylist);
     }
+
     [Fact]
     public void test_Save_SavesStylistsToDatabase()
     {
@@ -36,6 +39,7 @@ namespace HairSalon
       List<Stylists> testList = new List<Stylists> {testStylist};
       Assert.Equal(testList, result);
     }
+
     [Fact]
     public void test_Find_FindsStylistsInDatabase()
     {
@@ -46,11 +50,26 @@ namespace HairSalon
       Assert.Equal(testStylists, foundStylists);
     }
 
-    // THIS WILL BE WHERE THE RETRIEVE TEST GOES AFTER CLIENTS CS IS FINISHED
+    [Fact]
+    public void test_GetStylists_RetrieveAllClientsWithStylists()
+    {
+      Stylists testStylists = new Stylists("Harold");
+      testStylists.Save();
+
+      Clients firstClient = new Clients("Spongebob", 10, "sponge", 1, testStylists.GetId());
+      firstClient.Save();
+      Clients secondClient = new Clients("Patrick", 11, "starfish", 1, testStylists.GetId());
+      secondClient.Save();
+
+      List<Clients> testClientsList = new List<Clients> {firstClient, secondClient};
+      List<Clients> resultClientsList = testStylists.GetClients();
+
+      Assert.Equal(testClientsList, resultClientsList);
+    }
 
     public void Dispose()
     {
-      // Clients.DeleteAll();
+      Clients.DeleteAll();
       Stylists.DeleteAll();
     }
   }
