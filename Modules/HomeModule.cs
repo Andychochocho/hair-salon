@@ -34,6 +34,15 @@ namespace HairSalon
         model.Add("client", StylistClient);
         return View["stylist.cshtml", model];
       };
+      Get["/stylists/clientAdd"] = _ => {
+        List<Stylists> AllStylists = Stylists.GetAll();
+        return View["addClient.cshtml", AllStylists];
+      };
+      Post["/stylists/viewClients"] = Parameters => {
+        Clients newClients = new Clients(Request.Form["name"], Request.Form["age"], Request.Form["personalPronoun"]);
+        newClients.Save();
+        return View["success.cshtml", newClients];
+      };
     }
   }
 }
