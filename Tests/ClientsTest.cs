@@ -7,9 +7,9 @@ using Xunit;
 
 namespace HairSalon
 {
-  public class HairSalonTest : IDisposable
+  public class ClientTest : IDisposable
   {
-    public HairSalonTest()
+    public ClientTest()
     {
       DBConfiguration.ConnectionString = "Data Source = (localdb)\\mssqllocaldb;Initial Catalog=hairSalon_test; Integrated Security=SSPI;";
     }
@@ -32,8 +32,8 @@ namespace HairSalon
       Clients testClients = new Clients ("Big-Foot", 100, "they", 1);
       testClients.Save();
 
-      List<Clients> results = Clients.GetAll();
       List<Clients> test = new List<Clients> {testClients};
+      List<Clients> results = Clients.GetAll();
       Assert.Equal(results, test);
     }
     [Fact]
@@ -84,9 +84,9 @@ namespace HairSalon
       Stylists testStylists1 = new Stylists(name);
       testStylists1.Save();
 
-      Clients testClients1 = new Clients("Bruce Wayne", 40, "bat", 4, testStylists1.GetId());
+      Clients testClients1 = new Clients("Bruce Wayne", 40, "bat", testStylists1.GetId(), 4);
       testClients1.Save();
-      Clients testClients2 = new Clients("Clark Kent", 45, "alien", 18, testStylists1.GetId());
+      Clients testClients2 = new Clients("Clark Kent", 45, "alien", testStylists1.GetId(), 18);
       testClients2.Save();
 
       testClients1.Delete();
@@ -96,10 +96,10 @@ namespace HairSalon
       Assert.Equal(testClientsList, resultClients);
     }
 
-
     public void Dispose()
     {
       Clients.DeleteAll();
+      Stylists.DeleteAll();
     }
   }
 }

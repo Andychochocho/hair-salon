@@ -12,8 +12,7 @@ namespace HairSalon
     private string _personal_pronoun;
     private int _stylists_id;
 
-
-    public Clients(string name, int age, string personal_pronoun, int id = 0, int stylists_id =0)
+    public Clients(string name, int age, string personal_pronoun, int stylists_id, int id = 0)
     {
       _id = id;
       _name = name;
@@ -37,39 +36,6 @@ namespace HairSalon
         bool ageEquality = this.GetAge() == newClients.GetAge();
         bool personalPronounEquality = this.GetPersonalPronoun() == newClients.GetPersonalPronoun();
         return (idEquality && nameEquality && ageEquality && personalPronounEquality);
-      }
-    }
-
-    public void Update(string newName)
-    {
-      SqlConnection conn = DB.Connection();
-      SqlDataReader rdr;
-      conn.Open();
-
-      SqlCommand cmd = new SqlCommand("UPDATE clients SET name=@NewName OUTPUT INSERTED.name WHERE id=@ClientsId", conn);
-
-      SqlParameter newNameParameter = new SqlParameter();
-      newNameParameter.ParameterName = "@NewName";
-      newNameParameter.Value = newName;
-      cmd.Parameters.Add(newNameParameter);
-
-      SqlParameter ClientsIdParameter = new SqlParameter();
-      ClientsIdParameter.ParameterName = "@ClientsId";
-      ClientsIdParameter.Value = this.GetId();
-      cmd.Parameters.Add(ClientsIdParameter);
-      rdr = cmd.ExecuteReader();
-
-      while(rdr.Read())
-      {
-        this._name = rdr.GetString(0);
-      }
-      if(rdr != null)
-      {
-        rdr.Close();
-      }
-      if (conn != null)
-      {
-        conn.Close();
       }
     }
 
@@ -129,7 +95,7 @@ namespace HairSalon
         string ClientsPersonalPronoun = rdr.GetString(3);
         int ClientsStylistsId= rdr.GetInt32(4);
 
-        Clients newClients = new Clients(ClientsName, ClientsAge, ClientsPersonalPronoun, ClientsId,  ClientsStylistsId);
+        Clients newClients = new Clients(ClientsName, ClientsAge, ClientsPersonalPronoun, ClientsStylistsId, ClientsId);
         allClients.Add(newClients);
       }
       if (rdr != null)
@@ -187,34 +153,6 @@ namespace HairSalon
       }
     }
 
-    public void Delete()
-    {
-      SqlConnection conn = DB.Connection();
-      conn.Open();
-
-      SqlCommand cmd = new SqlCommand("DELETE FROM clients WHERE id = @ClientId;", conn);
-
-      SqlParameter clientsIdParameter = new SqlParameter();
-      clientsIdParameter.ParameterName = "@ClientId";
-      clientsIdParameter.Value = this.GetId();
-
-      cmd.Parameters.Add(clientsIdParameter);
-      cmd.ExecuteNonQuery();
-
-      if (conn != null)
-      {
-        conn.Close();
-      }
-    }
-
-    public static void DeleteAll()
-    {
-      SqlConnection conn = DB.Connection();
-      conn.Open();
-      SqlCommand cmd = new SqlCommand("DELETE FROM clients;", conn);
-      cmd.ExecuteNonQuery();
-    }
-
     public static Clients Find(int id)
     {
       SqlConnection conn = DB.Connection();
@@ -242,7 +180,7 @@ namespace HairSalon
         foundClientsPersonalPronoun = rdr.GetString(3);
         foundStylistsId = rdr.GetInt32(4);
       }
-      Clients foundClients = new Clients(foundClientsName, foundClientsAge, foundClientsPersonalPronoun, foundClientsId, foundStylistsId);
+      Clients foundClients = new Clients(foundClientsName, foundClientsAge, foundClientsPersonalPronoun, foundStylistsId, foundClientsId);
 
       if(rdr != null)
       {
@@ -253,6 +191,66 @@ namespace HairSalon
         conn.Close();
       }
       return foundClients;
+    }
+
+    public void Update(string newName)
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("UPDATE clients SET name=@NewName OUTPUT INSERTED.name WHERE id=@ClientsId", conn);
+
+      SqlParameter newNameParameter = new SqlParameter();
+      newNameParameter.ParameterName = "@NewName";
+      newNameParameter.Value = newName;
+      cmd.Parameters.Add(newNameParameter);
+
+      SqlParameter ClientsIdParameter = new SqlParameter();
+      ClientsIdParameter.ParameterName = "@ClientsId";
+      ClientsIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(ClientsIdParameter);
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this._name = rdr.GetString(0);
+      }
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+    public void Delete()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("DELETE FROM clients WHERE id = @ClientId;", conn);
+
+      SqlParameter clientsIdParameter = new SqlParameter();
+      clientsIdParameter.ParameterName = "@ClientId";
+      clientsIdParameter.Value = this.GetId();
+
+      cmd.Parameters.Add(clientsIdParameter);
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+    public static void DeleteAll()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("DELETE FROM clients;", conn);
+      cmd.ExecuteNonQuery();
     }
   }
 }

@@ -185,7 +185,7 @@ namespace HairSalon
         int ClientsAge = rdr.GetInt32(2);
         string ClientsPersonalPronoun = rdr.GetString(3);
         int ClientsStylistsId = rdr.GetInt32(4);
-        Clients newClients = new Clients(ClientsName, ClientsAge, ClientsPersonalPronoun, ClientsId, ClientsStylistsId);
+        Clients newClients = new Clients(ClientsName, ClientsAge, ClientsPersonalPronoun, ClientsStylistsId, ClientsId);
         clients.Add(newClients);
       }
 

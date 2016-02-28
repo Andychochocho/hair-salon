@@ -10,38 +10,44 @@ namespace HairSalon
     public HomeModule()
     {
       Get ["/"] = _ => {
-        List<Stylists> allStylists = Stylists.GetAll();
-        return View ["index.cshtml", allStylists];
-      };
-      Get ["/stylists/new"] = _ =>{
-        return View ["stylist_info.cshtml"];
-      };
-      Post["/"] = _ => {
-        Stylists newStylists = new Stylists(Request.Form["stylist-name"]);
-        newStylists.Save();
-        List<Stylists> allStylists = Stylists.GetAll();
-        return View["index.cshtml", allStylists];
-      };
-      Get["/stylist/ClearAll"] = _ => {
-        Stylists.DeleteAll();
         return View ["index.cshtml"];
       };
-      Get["/stylists/{id}"] =Parameters=> {
-        Dictionary <string, object> model = new Dictionary <string, object>();
-        var selectedStylist = Stylists.Find(Parameters.id);
-        var StylistClient = selectedStylist.GetClients();
-        model.Add ("stylist", selectedStylist);
-        model.Add("client", StylistClient);
-        return View["stylist.cshtml", model];
+      Get["/stylists"] = _ => {
+        List<Stylists> allStylists = Stylists.GetAll();
+        return View["stylists.cshtml", allStylists];
       };
-      Get["/stylists/clientAdd"] = _ => {
-        List<Stylists> AllStylists = Stylists.GetAll();
-        return View["addClient.cshtml", AllStylists];
+      Post["/stylists/new"] = _ => {
+        Stylists newStylist = new Stylists(Request.Form["stylist-name"]);
+        newStylist.Save();
+        List<Stylists> allStylists = Stylists.GetAll();
+        return View["stylists.cshtml", allStylists];
       };
-      Post["/stylists/viewClients"] = Parameters => {
-        Clients newClients = new Clients(Request.Form["name"], Request.Form["age"], Request.Form["personalPronoun"]);
-        newClients.Save();
-        return View["success.cshtml", newClients];
+      Get["/stylists/deleteAll"] = _ => {
+        Stylists.DeleteAll();
+        List<Stylists> allStylists = Stylists.GetAll();
+        return View["stylists.cshtml", allStylists];
+      };
+      Get["/stylists/{id}"] = Parameters => {
+        Dictionary<string, object> model = new Dictionary<string, object>();
+        Stylists selectStylist = Stylists.Find(Parameters.id);
+        List<Clients> stylistClient = selectStylist.GetClients();
+        List<Stylists> allStylists = Stylists.GetAll();
+        model.Add("stylist", selectStylist);
+        model.Add("clients", stylistClient);
+        model.Add("stylists", allStylists);
+        return View["clients.cshtml", model];
+      };
+      Post["/stylists/{id}/new"] = Parameters => {
+        Clients newClient = new Clients(Request.Form["name"],Request.Form["age"], Request.Form["personalPronoun"], Request.Form["stylists_id"]);
+        newClient.Save();
+        Dictionary<string, object> model = new Dictionary<string, object>();
+        Stylists selectStylist = Stylists.Find(Parameters.id);
+        List<Clients> stylistClient = selectStylist.GetClients();
+        List<Stylists> allStylists = Stylists.GetAll();
+        model.Add("stylist", selectStylist);
+        model.Add("clients", stylistClient);
+        model.Add("stylists", allStylists);
+        return View["clients.cshtml", model];
       };
     }
   }

@@ -1,0 +1,43 @@
+<h2>A list of @Model["stylist"].GetName()'s Clients</h2>
+@if (@Model["clients"].Count == 0)
+{
+  <p>No clients have been added yet!</p>
+}
+else
+{
+  <ol>
+    @foreach (var client in @Model["clients"])
+    {
+      <li>
+        @client.GetName();
+        @client.GetAge();
+        @client.GetPersonalPronoun();
+      </li>
+    }
+  </ol>
+}
+<p><a href="/stylists">Return to the list of all stylists</a></p>
+
+
+<hr />
+<h3>Add a new client</h3>
+<form action='/stylists/@Model["stylist"].GetId()/new' method="post">
+  <label for="name">Name:</label>
+  <input name="name" type="text" id="name">
+  <br><br>
+  <label for="age">Age</label>
+  <input name="age" type="text" id="age">
+  <br><br>
+  <label for="personalPronoun">Preferred Personal Pronoun</label>
+  <input name="personalPronoun" type="text" id="personalPronoun">
+  <br><br>
+  <label for="stylist-id">Stylist:</label>
+  <select name="stylist-id">
+    @foreach (var stylist in @Model["stylists"])
+    {
+      <option value="@stylist.GetId()">@stylist.GetName()</option>
+    }
+  </select>
+  <br><br>
+  <button type="submit">Add new client</button>
+</form>

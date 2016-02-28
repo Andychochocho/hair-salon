@@ -56,9 +56,9 @@ namespace HairSalon
       Stylists testStylists = new Stylists("Harold");
       testStylists.Save();
 
-      Clients firstClient = new Clients("Spongebob", 10, "sponge", 1, testStylists.GetId());
+      Clients firstClient = new Clients("Spongebob", 10, "sponge", testStylists.GetId(), 1);
       firstClient.Save();
-      Clients secondClient = new Clients("Patrick", 11, "starfish", 1, testStylists.GetId());
+      Clients secondClient = new Clients("Patrick", 11, "starfish",testStylists.GetId(), 1);
       secondClient.Save();
 
       List<Clients> testClientsList = new List<Clients> {firstClient, secondClient};
@@ -92,9 +92,9 @@ namespace HairSalon
       Stylists testStylistsTwo = new Stylists(nameTwo);
       testStylistsTwo.Save();
 
-      Clients testClientOne = new Clients("Donnie", 18, "he", 1, testStylistsOne.GetId());
+      Clients testClientOne = new Clients("Donnie", 18, "he", testStylistsOne.GetId(), 1);
       testClientOne.Save();
-      Clients testClientTwo = new Clients("Darko", 50, "she", 10, testStylistsTwo.GetId());
+      Clients testClientTwo = new Clients("Darko", 50, "she", testStylistsTwo.GetId(), 10);
       testClientTwo.Save();
 
       testStylistsOne.Delete();
