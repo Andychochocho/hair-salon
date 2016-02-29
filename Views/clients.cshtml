@@ -5,16 +5,14 @@
 }
 else
 {
-  <ol>
     @foreach (var client in @Model["clients"])
     {
-      <li>
-        @client.GetName();
-        @client.GetAge();
-        @client.GetPersonalPronoun();
-      </li>
+      <li>Name: @client.GetName()</li>
+      <ul>
+        <li>Age: @client.GetAge()</li>
+        <li>Preferred Personal Pronoun: @client.GetPersonalPronoun()</li>
+      </ul>
     }
-  </ol>
 }
 <p><a href="/stylists">Return to the list of all stylists</a></p>
 

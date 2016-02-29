@@ -38,7 +38,7 @@ namespace HairSalon
         return View["clients.cshtml", model];
       };
       Post["/stylists/{id}/new"] = Parameters => {
-        Clients newClient = new Clients(Request.Form["name"],Request.Form["age"], Request.Form["personalPronoun"], Request.Form["stylists_id"]);
+        Clients newClient = new Clients(Request.Form["name"],Request.Form["age"], Request.Form["personalPronoun"], Request.Form["stylist-id"]);
         newClient.Save();
         Dictionary<string, object> model = new Dictionary<string, object>();
         Stylists selectStylist = Stylists.Find(Parameters.id);
