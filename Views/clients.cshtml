@@ -13,6 +13,10 @@ else
         <li>Age: @client.GetAge()</li>
         <li>Preferred Personal Pronoun: @client.GetPersonalPronoun()</li>
       </ul>
+      <form action="/client/delete/@client.GetId()" method="post">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit">Delete</button>
+      </form>
     }
 }
 <p><a href="/stylists">Return to the list of all stylists</a></p>
