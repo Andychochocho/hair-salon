@@ -11,38 +11,38 @@ namespace HairSalon
   {
     public ClientTest()
     {
-      DBConfiguration.ConnectionString = "Data Source = (localdb)\\mssqllocaldb;Initial Catalog=hairSalon_test; Integrated Security=SSPI;";
+      DBConfiguration.ConnectionString = "Data Source = (localdb)\\mssqllocaldb;Initial Catalog=hair_salon_test; Integrated Security=SSPI;";
     }
     [Fact]
     public void test_DatabaseEmptyInitially()
     {
-      int result = Clients.GetAll().Count;
+      int result = Client.GetAll().Count;
       Assert.Equal(0, result);
     }
     [Fact]
     public void test_ClientsReturnTrueForSameName()
     {
-      Clients firstClient = new Clients("Andrew", 20, "he", 1);
-      Clients secondClient = new Clients("Andrew", 20, "he", 1);
+      Client firstClient = new Client("Andrew", 20, "he", 1);
+      Client secondClient = new Client("Andrew", 20, "he", 1);
       Assert.Equal(firstClient, secondClient);
     }
     [Fact]
     public void test_Save_SavesObjectsToDatabase()
     {
-      Clients testClients = new Clients ("Big-Foot", 100, "they", 1);
+      Client testClients = new Client ("Big-Foot", 100, "they", 1);
       testClients.Save();
 
-      List<Clients> test = new List<Clients> {testClients};
-      List<Clients> results = Clients.GetAll();
+      List<Client> test = new List<Client> {testClients};
+      List<Client> results = Client.GetAll();
       Assert.Equal(results, test);
     }
     [Fact]
     public void test_SaveAssignsIdToObject()
     {
-      Clients testClients = new Clients("Nissa", 300, "planeswalker", 1);
+      Client testClients = new Client("Nissa", 300, "planeswalker", 1);
       testClients.Save();
 
-      Clients savedClients = Clients.GetAll()[0];
+      Client savedClients = Client.GetAll()[0];
       int result = savedClients.GetId();
       int testId = testClients.GetId();
       Assert.Equal(testId, result);
@@ -50,10 +50,10 @@ namespace HairSalon
     [Fact]
     public void test_FindClientsInDatabase()
     {
-      Clients testClients = new Clients("Drana", 4000, "vampire", 1);
+      Client testClients = new Client("Drana", 4000, "vampire", 1);
       testClients.Save();
 
-      Clients foundClients = Clients.Find(testClients.GetId());
+      Client foundClients = Client.Find(testClients.GetId());
       Assert.Equal(testClients, foundClients);
     }
 
@@ -65,15 +65,15 @@ namespace HairSalon
       string personalPronoun = "he";
       int stylistsId = 1;
 
-      Clients testClients = new Clients(name, age, personalPronoun, stylistsId);
+      Client testClients = new Client(name, age, personalPronoun, stylistsId);
       testClients.Save();
 
       string newName = "Caroline";
 
       testClients.Update(newName);
 
-      Clients result = new Clients(testClients.GetName(), age, personalPronoun, stylistsId);
-      Clients newClient = new Clients (newName, age, personalPronoun, stylistsId);
+      Client result = new Client(testClients.GetName(), age, personalPronoun, stylistsId);
+      Client newClient = new Client (newName, age, personalPronoun, stylistsId);
       Assert.Equal(newClient, result);
     }
     [Fact]
@@ -81,25 +81,25 @@ namespace HairSalon
     {
       string name = "Hair Dresser";
 
-      Stylists testStylists1 = new Stylists(name);
+      Stylist testStylists1 = new Stylist(name);
       testStylists1.Save();
 
-      Clients testClients1 = new Clients("Bruce Wayne", 40, "bat", testStylists1.GetId(), 4);
+      Client testClients1 = new Client("Bruce Wayne", 40, "bat", testStylists1.GetId(), 4);
       testClients1.Save();
-      Clients testClients2 = new Clients("Clark Kent", 45, "alien", testStylists1.GetId(), 18);
+      Client testClients2 = new Client("Clark Kent", 45, "alien", testStylists1.GetId(), 18);
       testClients2.Save();
 
       testClients1.Delete();
-      List<Clients> resultClients = testStylists1.GetClients();
-      List<Clients> testClientsList = new List<Clients> {testClients2};
+      List<Client> resultClients = testStylists1.GetClients();
+      List<Client> testClientsList = new List<Client> {testClients2};
 
       Assert.Equal(testClientsList, resultClients);
     }
 
     public void Dispose()
     {
-      Clients.DeleteAll();
-      Stylists.DeleteAll();
+      Client.DeleteAll();
+      Stylist.DeleteAll();
     }
   }
 }

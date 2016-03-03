@@ -11,58 +11,58 @@ namespace HairSalon
   {
     public StylistsTest()
     {
-      DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=hairSalon_test;Integrated Security=SSPI;";
+      DBConfiguration.ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=hair_salon_test;Integrated Security=SSPI;";
     }
 
     [Fact]
     public void test_StylistsEmptyAtFirst()
     {
-      int result = Stylists.GetAll().Count;
+      int result = Stylist.GetAll().Count;
       Assert.Equal(0, result);
     }
 
     [Fact]
     public void test_StylistsReturnTrueForSame()
     {
-      Stylists firstStylist = new Stylists("Cody");
-      Stylists secondStylist = new Stylists("Cody");
+      Stylist firstStylist = new Stylist("Cody");
+      Stylist secondStylist = new Stylist("Cody");
       Assert.Equal(firstStylist, secondStylist);
     }
 
     [Fact]
     public void test_Save_SavesStylistsToDatabase()
     {
-      Stylists testStylist = new Stylists("Sammy");
+      Stylist testStylist = new Stylist("Sammy");
       testStylist.Save();
 
-      List<Stylists> result = Stylists.GetAll();
-      List<Stylists> testList = new List<Stylists> {testStylist};
+      List<Stylist> result = Stylist.GetAll();
+      List<Stylist> testList = new List<Stylist> {testStylist};
       Assert.Equal(testList, result);
     }
 
     [Fact]
     public void test_Find_FindsStylistsInDatabase()
     {
-      Stylists testStylists = new Stylists("Jimmy");
+      Stylist testStylists = new Stylist("Jimmy");
       testStylists.Save();
 
-      Stylists foundStylists = Stylists.Find(testStylists.GetId());
+      Stylist foundStylists = Stylist.Find(testStylists.GetId());
       Assert.Equal(testStylists, foundStylists);
     }
 
     [Fact]
     public void test_GetStylists_RetrieveAllClientsWithStylists()
     {
-      Stylists testStylists = new Stylists("Harold");
+      Stylist testStylists = new Stylist("Harold");
       testStylists.Save();
 
-      Clients firstClient = new Clients("Spongebob", 10, "sponge", testStylists.GetId(), 1);
+      Client firstClient = new Client("Spongebob", 10, "sponge", testStylists.GetId(), 1);
       firstClient.Save();
-      Clients secondClient = new Clients("Patrick", 11, "starfish",testStylists.GetId(), 1);
+      Client secondClient = new Client("Patrick", 11, "starfish",testStylists.GetId(), 1);
       secondClient.Save();
 
-      List<Clients> testClientsList = new List<Clients> {firstClient, secondClient};
-      List<Clients> resultClientsList = testStylists.GetClients();
+      List<Client> testClientsList = new List<Client> {firstClient, secondClient};
+      List<Client> resultClientsList = testStylists.GetClients();
 
       Assert.Equal(testClientsList, resultClientsList);
     }
@@ -71,7 +71,7 @@ namespace HairSalon
     public void test_Update_UpdatesStylistsInDatabase()
     {
       string name = "Andrew";
-      Stylists testStylists = new Stylists(name);
+      Stylist testStylists = new Stylist(name);
       testStylists.Save();
       string newName = "Andy";
 
@@ -85,24 +85,24 @@ namespace HairSalon
     public void test_Delete_DeletesStylistFromDatabase()
     {
       string nameOne = "John Smith";
-      Stylists testStylistsOne = new Stylists(nameOne);
+      Stylist testStylistsOne = new Stylist(nameOne);
       testStylistsOne.Save();
 
       string nameTwo = "Jill Smith";
-      Stylists testStylistsTwo = new Stylists(nameTwo);
+      Stylist testStylistsTwo = new Stylist(nameTwo);
       testStylistsTwo.Save();
 
-      Clients testClientOne = new Clients("Donnie", 18, "he", testStylistsOne.GetId(), 1);
+      Client testClientOne = new Client("Donnie", 18, "he", testStylistsOne.GetId(), 1);
       testClientOne.Save();
-      Clients testClientTwo = new Clients("Darko", 50, "she", testStylistsTwo.GetId(), 10);
+      Client testClientTwo = new Client("Darko", 50, "she", testStylistsTwo.GetId(), 10);
       testClientTwo.Save();
 
       testStylistsOne.Delete();
-      List<Stylists> resultStylists = Stylists.GetAll();
-      List<Stylists> testStylistsList = new List<Stylists> {testStylistsTwo};
+      List<Stylist> resultStylists = Stylist.GetAll();
+      List<Stylist> testStylistsList = new List<Stylist> {testStylistsTwo};
 
-      List<Clients> resultClients = Clients.GetAll();
-      List<Clients> testClientsList = new List<Clients> {testClientTwo};
+      List<Client> resultClients = Client.GetAll();
+      List<Client> testClientsList = new List<Client> {testClientTwo};
 
       Assert.Equal(testStylistsList, resultStylists);
       Assert.Equal(testClientsList, resultClients);
@@ -110,8 +110,8 @@ namespace HairSalon
 
     public void Dispose()
     {
-      Clients.DeleteAll();
-      Stylists.DeleteAll();
+      Client.DeleteAll();
+      Stylist.DeleteAll();
     }
   }
 }

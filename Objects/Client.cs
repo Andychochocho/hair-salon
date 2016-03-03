@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 
 namespace HairSalon
 {
-  public class Clients
+  public class Client
   {
     private int _id;
     private string _name;
@@ -12,7 +12,7 @@ namespace HairSalon
     private string _personal_pronoun;
     private int _stylists_id;
 
-    public Clients(string name, int age, string personal_pronoun, int stylists_id, int id = 0)
+    public Client(string name, int age, string personal_pronoun, int stylists_id, int id = 0)
     {
       _id = id;
       _name = name;
@@ -21,20 +21,20 @@ namespace HairSalon
       _stylists_id = stylists_id;
     }
 
-    public override bool Equals(System.Object otherClients)
+    public override bool Equals(System.Object otherClient)
     {
-      if (!(otherClients is Clients))
+      if (!(otherClient is Client))
       {
         return false;
       }
       else
       {
-        Clients newClients = (Clients) otherClients;
-        bool idEquality = this.GetId() == newClients.GetId();
-        bool idStylistEquality = this.GetStylistsId() == newClients.GetStylistsId();
-        bool nameEquality = this.GetName() == newClients.GetName();
-        bool ageEquality = this.GetAge() == newClients.GetAge();
-        bool personalPronounEquality = this.GetPersonalPronoun() == newClients.GetPersonalPronoun();
+        Client newClient = (Client) otherClient;
+        bool idEquality = this.GetId() == newClient.GetId();
+        bool idStylistEquality = this.GetStylistsId() == newClient.GetStylistsId();
+        bool nameEquality = this.GetName() == newClient.GetName();
+        bool ageEquality = this.GetAge() == newClient.GetAge();
+        bool personalPronounEquality = this.GetPersonalPronoun() == newClient.GetPersonalPronoun();
         return (idEquality && nameEquality && ageEquality && personalPronounEquality);
       }
     }
@@ -77,9 +77,9 @@ namespace HairSalon
       _stylists_id = newStylistId;
     }
 
-    public static List<Clients> GetAll()
+    public static List<Client> GetAll()
     {
-      List<Clients> allClients = new List<Clients>{};
+      List<Client> allClient = new List<Client>{};
       SqlConnection conn = DB.Connection();
       SqlDataReader rdr = null;
       conn.Open();
@@ -89,14 +89,14 @@ namespace HairSalon
 
       while(rdr.Read())
       {
-        int ClientsId = rdr.GetInt32(0);
-        string ClientsName = rdr.GetString(1);
-        int ClientsAge = rdr.GetInt32(2);
-        string ClientsPersonalPronoun = rdr.GetString(3);
-        int ClientsStylistsId= rdr.GetInt32(4);
+        int ClientId = rdr.GetInt32(0);
+        string ClientName = rdr.GetString(1);
+        int ClientAge = rdr.GetInt32(2);
+        string ClientPersonalPronoun = rdr.GetString(3);
+        int ClientStylistsId= rdr.GetInt32(4);
 
-        Clients newClients = new Clients(ClientsName, ClientsAge, ClientsPersonalPronoun, ClientsStylistsId, ClientsId);
-        allClients.Add(newClients);
+        Client newClient = new Client(ClientName, ClientAge, ClientPersonalPronoun, ClientStylistsId, ClientId);
+        allClient.Add(newClient);
       }
       if (rdr != null)
       {
@@ -106,7 +106,7 @@ namespace HairSalon
       {
         conn.Close();
       }
-      return allClients;
+      return allClient;
     }
 
     public void Save()
@@ -115,7 +115,7 @@ namespace HairSalon
       SqlDataReader rdr = null;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO clients (name, age, personal_pronoun, stylists_id) OUTPUT INSERTED.id VALUES (@ClientsName, @ClientsAge, @ClientsPersonalPronoun, @StylistsId);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO clients (name, age, personal_pronoun, stylist_id) OUTPUT INSERTED.id VALUES (@ClientsName, @ClientsAge, @ClientsPersonalPronoun, @StylistsId);", conn);
 
       SqlParameter nameParameter = new SqlParameter();
       nameParameter.ParameterName = "@ClientsName";
@@ -153,7 +153,7 @@ namespace HairSalon
       }
     }
 
-    public static Clients Find(int id)
+    public static Client Find(int id)
     {
       SqlConnection conn = DB.Connection();
       SqlDataReader rdr = null;
@@ -180,7 +180,7 @@ namespace HairSalon
         foundClientsPersonalPronoun = rdr.GetString(3);
         foundStylistsId = rdr.GetInt32(4);
       }
-      Clients foundClients = new Clients(foundClientsName, foundClientsAge, foundClientsPersonalPronoun, foundStylistsId, foundClientsId);
+      Client foundClients = new Client(foundClientsName, foundClientsAge, foundClientsPersonalPronoun, foundStylistsId, foundClientsId);
 
       if(rdr != null)
       {
